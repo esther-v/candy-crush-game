@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const grid = document.querySelector('.grid')
     const width = 8
     const squares = []
+    const scoreDisplay = document.getElementById('score')
     let score = 0
 
     const candyColors = [
@@ -88,6 +89,22 @@ document.addEventListener('DOMContentLoaded', () => {
         } else squares[squareIdBeingDragged].style.backgroundColor = colorBeingDragged
     }
 
+    //drop candies once some have been cleared
+    function moveDown() {
+        for (i = 0; i < 55; i ++) {
+            if (squares[i + width].style.backgroundColor === '') {
+                squares[i + width].style.backgroundColor = squares[i].style.backgroundColor
+                squares[i].style.backgroundColor = ''
+                const firstRow = [0, 1, 2, 3, 4, 5, 6, 7]
+                const isFirstRow = firstRow.includes(i)
+                if (isFirstRow && squares[i].style.backgroundColor === '') {
+                    let randomColor = Math.floor(Math.random() * candyColors.length)
+                    squares[i].style.backgroundColor = candyColors[randomColor]
+                }
+            }
+        }
+    }
+
     //----Checking for matches
     // check for row of three
     function checkRowForThree() {
@@ -96,8 +113,12 @@ document.addEventListener('DOMContentLoaded', () => {
             let decidedColor = squares[i].style.backgroundColor
             const isBlank = squares[i].style.backgroundColor === ''
 
+            const notValid = [6, 7, 14, 15, 22, 23, 30, 31, 38, 39, 46, 47, 54, 55]
+            if (notValid.includes(i)) continue
+
             if(rowOfThree.every(index => squares[index].style.backgroundColor === decidedColor && !isBlank)) {
                 score += 3
+                scoreDisplay.innerHTML = score
                 rowOfThree.forEach(index => {
                     squares[index].style.backgroundColor = ''
                 })
@@ -115,6 +136,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if(columnOfThree.every(index => squares[index].style.backgroundColor === decidedColor && !isBlank)) {
                 score += 3
+                scoreDisplay.innerHTML = score
                 columnOfThree.forEach(index => {
                     squares[index].style.backgroundColor = ''
                 })
@@ -123,7 +145,49 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     checkColumnForThree()
 
+    // check for row of four
+    function checkRowForFour() {
+        for( i = 0; i < 60; i++) {
+            let rowOfFour = [i, i+1, i+2, i+3]
+            let decidedColor = squares[i].style.backgroundColor
+            const isBlank = squares[i].style.backgroundColor === ''
+
+            const notValid = [5, 6, 7, 13, 14, 15, 21, 22, 23, 29, 30, 31, 37, 38, 39, 45, 46, 47, 53, 54, 55]
+            if (notValid.includes(i)) continue
+
+            if(rowOfFour.every(index => squares[index].style.backgroundColor === decidedColor && !isBlank)) {
+                score += 4
+                scoreDisplay.innerHTML = score
+                rowOfFour.forEach(index => {
+                    squares[index].style.backgroundColor = ''
+                })
+            }
+        }
+    }
+    checkRowForFour()
+
+    // check for column of four
+    function checkColumnForFour() {
+        for( i = 0; i < 47; i++) {
+            let columnOfFour = [i, i+width, i+width*2, i+width*3]
+            let decidedColor = squares[i].style.backgroundColor
+            const isBlank = squares[i].style.backgroundColor === ''
+
+            if(columnOfFour.every(index => squares[index].style.backgroundColor === decidedColor && !isBlank)) {
+                score += 4
+                scoreDisplay.innerHTML = score
+                columnOfFour.forEach(index => {
+                    squares[index].style.backgroundColor = ''
+                })
+            }
+        }
+    }
+    checkColumnForFour()
+
     window.setInterval(function() {
+        moveDown()
+        checkRowForFour()
+        checkColumnForFour()
         checkRowForThree()
         checkColumnForThree()
     }, 100)
