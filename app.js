@@ -59,11 +59,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function dragLeave() {
+        this.style.backgroundImage =''
         console.log(this.id, 'dragleave')
     }
 
     function dragDrop() {
-        console.log(this.id, 'dragdrop')
+        
         colorBeingReplaced = this.style.backgroundImage
         squareIdBeingReplaced = parseInt(this.id)
         this.style.backgroundImage = colorBeingDragged
@@ -106,45 +107,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     //----Checking for matches
-    // check for row of three
-    function checkRowForThree() {
-        for( i = 0; i < 61; i++) {
-            let rowOfThree = [i, i+1, i+2]
-            let decidedColor = squares[i].style.backgroundImage
-            const isBlank = squares[i].style.backgroundImage === ''
-
-            const notValid = [6, 7, 14, 15, 22, 23, 30, 31, 38, 39, 46, 47, 54, 55]
-            if (notValid.includes(i)) continue
-
-            if(rowOfThree.every(index => squares[index].style.backgroundImage === decidedColor && !isBlank)) {
-                score += 3
-                scoreDisplay.innerHTML = score
-                rowOfThree.forEach(index => {
-                    squares[index].style.backgroundImage = ''
-                })
-            }
-        }
-    }
-    checkRowForThree()
-
-    // check for column of three
-    function checkColumnForThree() {
-        for( i = 0; i < 47; i++) {
-            let columnOfThree = [i, i+width, i+width*2]
-            let decidedColor = squares[i].style.backgroundImage
-            const isBlank = squares[i].style.backgroundImage === ''
-
-            if(columnOfThree.every(index => squares[index].style.backgroundImage === decidedColor && !isBlank)) {
-                score += 3
-                scoreDisplay.innerHTML = score
-                columnOfThree.forEach(index => {
-                    squares[index].style.backgroundImage = ''
-                })
-            }
-        }
-    }
-    checkColumnForThree()
-
+    
     // check for row of four
     function checkRowForFour() {
         for( i = 0; i < 60; i++) {
@@ -164,11 +127,11 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     }
-    checkRowForFour()
+    // checkRowForFour()
 
     // check for column of four
     function checkColumnForFour() {
-        for( i = 0; i < 47; i++) {
+        for( i = 0; i < 39; i++) {
             let columnOfFour = [i, i+width, i+width*2, i+width*3]
             let decidedColor = squares[i].style.backgroundImage
             const isBlank = squares[i].style.backgroundImage === ''
@@ -182,14 +145,55 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     }
-    checkColumnForFour()
+    // checkColumnForFour()
+
+    // check for row of three
+    function checkRowForThree() {
+        for( i = 0; i < 61; i++) {
+            let rowOfThree = [i, i+1, i+2]
+            let decidedColor = squares[i].style.backgroundImage
+            const isBlank = squares[i].style.backgroundImage === ''
+
+            const notValid = [6, 7, 14, 15, 22, 23, 30, 31, 38, 39, 46, 47, 54, 55]
+            if (notValid.includes(i)) continue
+
+            if(rowOfThree.every(index => squares[index].style.backgroundImage === decidedColor && !isBlank)) {
+                score += 3
+                scoreDisplay.innerHTML = score
+                rowOfThree.forEach(index => {
+                    squares[index].style.backgroundImage = ''
+                })
+            }
+        }
+    }
+    // checkRowForThree()
+
+    // check for column of three
+    function checkColumnForThree() {
+        for( i = 0; i < 47; i++) {
+            let columnOfThree = [i, i+width, i+width*2]
+            let decidedColor = squares[i].style.backgroundImage
+            const isBlank = squares[i].style.backgroundImage === ''
+
+            if(columnOfThree.every(index => squares[index].style.backgroundImage === decidedColor && !isBlank)) {
+                score += 3
+                scoreDisplay.innerHTML = score
+                columnOfThree.forEach(index => {
+                    squares[index].style.backgroundImage = ''
+                })
+            }
+        }
+    }
+    // checkColumnForThree()
+
 
     window.setInterval(function() {
-        moveDown()
         checkRowForFour()
         checkColumnForFour()
         checkRowForThree()
         checkColumnForThree()
+        moveDown()
+        
     }, 100)
     
 
