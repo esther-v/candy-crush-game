@@ -127,7 +127,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     }
-    // checkRowForFour()
+    checkRowForFour()
 
     // check for column of four
     function checkColumnForFour() {
@@ -145,7 +145,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     }
-    // checkColumnForFour()
+    checkColumnForFour()
 
     // check for row of three
     function checkRowForThree() {
@@ -166,7 +166,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     }
-    // checkRowForThree()
+    checkRowForThree()
 
     // check for column of three
     function checkColumnForThree() {
@@ -184,7 +184,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     }
-    // checkColumnForThree()
+    checkColumnForThree()
 
 
     window.setInterval(function() {
